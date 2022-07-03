@@ -1,133 +1,362 @@
 window.onload = function () {
     var step = 0;
-    /*var check_cross = ['allBlock[0].innerHTML = "x" && allBlock[1].innerHTML = "x" && allBlock[2].innerHTML = "x"', 'allBlock[3].innerHTML == "x" && allBlock[4].innerHTML == "x" && allBlock[5].innerHTML == "x"', 'allBlock[6].innerHTML == "x" && allBlock[7].innerHTML == "x" && allBlock[8].innerHTML == "x"', 'allBlock[0].innerHTML == "x" && allBlock[3].innerHTML == "x" && allBlock[6].innerHTML == "x"', 'allBlock[1].innerHTML == "x" && allBlock[4].innerHTML == "x" && allBlock[7].innerHTML == "x"', 'allBlock[2].innerHTML == "x" && allBlock[5].innerHTML == "x" && allBlock[8].innerHTML == "x"'];
-    var check_circle = ['allBlock[0].innerHTML = "0" && allBlock[1].innerHTML = "0" && allBlock[2].innerHTML = "0"', 'allBlock[3].innerHTML == "0" && allBlock[4].innerHTML == "0" && allBlock[5].innerHTML == "0"', 'allBlock[6].innerHTML == "0" && allBlock[7].innerHTML == "0" && allBlock[8].innerHTML == "0"', 'allBlock[0].innerHTML == "0" && allBlock[3].innerHTML == "0" && allBlock[6].innerHTML == "0"', 'allBlock[1].innerHTML == "0" && allBlock[4].innerHTML == "0" && allBlock[7].innerHTML == "0"', 'allBlock[2].innerHTML == "0" && allBlock[5].innerHTML == "0" && allBlock[8].innerHTML == "0"'];
-
-    var check_cross = ['allBlock[0].innerHTML = "x" && allBlock[1].innerHTML = "x" && allBlock[2].innerHTML = "x"']*/
-
     for (let i = 0; i < 9; i++) {
-        document.getElementById("game").innerHTML +=
-            '<div class="block"></div>';
+        document.getElementById(
+            "game"
+        ).innerHTML += `<div class="block" id=${i}></div>`;
     }
-
-    document.getElementById("game").onclick = function (event) {
-        // console.log(event);
-        if (event?.path[0].innerHTML === '') {
-            if (event.target.className == "block") {
-                if (step % 2 == 0) {
-                    event.target.innerHTML = "x";
-                } else {
-                    event.target.innerHTML = "0";
-                }
-                step += 1;
-                checkWinner();
+    let isBot = confirm("С ботом?");
+    if (isBot) {
+        var botFirst = confirm("Бот ходит первый?");
+    }
+    let stepsPlayer = [];
+    function Step(event) {
+        if (event.target.innerHTML === "") {
+            if (step % 2 === 0) {
+                event.target.innerHTML = String("x");
+                stepsPlayer.push(event.target.id);
+            } else {
+                event.target.innerHTML = String("0");
+                stepsPlayer.push(event.target.id);
             }
+            step += 1;
+            checkWinner();
+        } else {
+            console.log("Error");
         }
     }
-
-    function checkWinner() {
-        //Вариант вроде рабочий но надо будет детально всё изучить
-        /*console.log("Проверка победителя");
-        for (let a = 0; a < check_cross.length; a++) {
-            let allBlock = document.getElementByClassName('block');
-            // let inner_check_x = check_x[a];
-            console.log("Это 'allBlock'", allBlock);
-            // console.log("Это 'inner_check_x'", inner_check_x);
-            console.log("Это 'check_cross[a]'", check_cross[a]);
-            if (check_cross[a]) {
-                console.log("Победили крестики");
-                // return;
-                break;
-            };
-
-        };
-        for (let v = 0; v < check_circle.length; v++) {
-            let allBlock = document.getElementByClassName('block');
-            // let inner_check_x = check_x[a];
-            console.log("Это 'allBlock'", allBlock);
-            // console.log("Это 'inner_check_x'", inner_check_x);
-            console.log("Это 'check_circle[v]'", check_circle[v]);
-            if (check_circle[v]) {
-                console.log("Победили нолики");
-                // return;
-                break;
-            };
-
-        };
-
-        function Reload() {
-            const bool = confirm("Заново?");
-            if (bool) {
-                window.location.reload();
+    function Bot() {
+        let botStepId = Math.floor(Math.random() * (8 - 0) + 0);
+        let allBlock = document.getElementsByClassName("block");
+        let block = document.getElementById(botStepId);
+        const botStep = () => {
+            let clearBlock = [];
+            for (let z = 0; z < allBlock.length; z++) {
+                if (allBlock[z].innerHTML === "") {
+                    clearBlock.push(allBlock[z].innerHTML);
+                }
             }
-        }*/
+            let sorting = [];
+            for (let q = 0; q < 9; q++) {
+                for (let w = 0; w < 9; w++) {
+                    if (String(stepsPlayer[w]) === String(q)) {
+                        sorting.push(stepsPlayer[w]);
+                    }
+                }
+            }
+            // console.log(JSON.stringify(sorting));
+            if ((botFirst && step % 2 === 0) || step % 2 !== 0) {
+                if (String(JSON.stringify(sorting)) === String('["0","1"]')) {
+                    let block = document.getElementById(2);
+                    if (block.innerHTML === "") {
+                        if (step % 2 === 0) {
+                            block.innerHTML = String("x");
+                        } else {
+                            block.innerHTML = String("0");
+                        }
+                        step += 1;
+                        checkWinner();
+                    } else {
+                        console.log("block filled");
+                    }
+                } else if (
+                    String(JSON.stringify(sorting)) === String('["1","2"]')
+                ) {
+                    let block = document.getElementById(0);
+                    if (block.innerHTML === "") {
+                        if (step % 2 === 0) {
+                            block.innerHTML = String("x");
+                        } else {
+                            block.innerHTML = String("0");
+                        }
+                        step += 1;
+                        checkWinner();
+                    } else {
+                        console.log("block filled");
+                    }
+                } else if (
+                    String(JSON.stringify(sorting)) === String('["3","4"]')
+                ) {
+                    let block = document.getElementById(5);
+                    if (block.innerHTML === "") {
+                        if (step % 2 === 0) {
+                            block.innerHTML = String("x");
+                        } else {
+                            block.innerHTML = String("0");
+                        }
+                        step += 1;
+                        checkWinner();
+                    } else {
+                        console.log("block filled");
+                    }
+                } else if (
+                    String(JSON.stringify(sorting)) === String('["4","5"]')
+                ) {
+                    let block = document.getElementById(3);
+                    if (block.innerHTML === "") {
+                        if (step % 2 === 0) {
+                            block.innerHTML = String("x");
+                        } else {
+                            block.innerHTML = String("0");
+                        }
+                        step += 1;
+                        checkWinner();
+                    } else {
+                        console.log("block filled");
+                    }
+                } else if (
+                    String(JSON.stringify(sorting)) === String('["6","7"]')
+                ) {
+                    let block = document.getElementById(8);
+                    if (block.innerHTML === "") {
+                        if (step % 2 === 0) {
+                            block.innerHTML = String("x");
+                        } else {
+                            block.innerHTML = String("0");
+                        }
+                        step += 1;
+                        checkWinner();
+                    } else {
+                        console.log("block filled");
+                    }
+                } else if (
+                    String(JSON.stringify(sorting)) === String('["7","8"]')
+                ) {
+                    let block = document.getElementById(6);
+                    if (block.innerHTML === "") {
+                        if (step % 2 === 0) {
+                            block.innerHTML = String("x");
+                        } else {
+                            block.innerHTML = String("0");
+                        }
+                        step += 1;
+                        checkWinner();
+                    } else {
+                        console.log("block filled");
+                    }
+                } else if (
+                    String(JSON.stringify(sorting)) === String('["0","3"]')
+                ) {
+                    let block = document.getElementById(6);
+                    if (block.innerHTML === "") {
+                        if (step % 2 === 0) {
+                            block.innerHTML = String("x");
+                        } else {
+                            block.innerHTML = String("0");
+                        }
+                        step += 1;
+                        checkWinner();
+                    } else {
+                        console.log("block filled");
+                    }
+                } else if (
+                    String(JSON.stringify(sorting)) === String('["1","4"]')
+                ) {
+                    let block = document.getElementById(7);
+                    if (block.innerHTML === "") {
+                        if (step % 2 === 0) {
+                            block.innerHTML = String("x");
+                        } else {
+                            block.innerHTML = String("0");
+                        }
+                        step += 1;
+                        checkWinner();
+                    } else {
+                        console.log("block filled");
+                    }
+                } else if (String(JSON.stringify(sorting)) === String('["2","5"]')) {
+                    let block = document.getElementById(8);
+                    if (block.innerHTML === "") {
+                        if (step % 2 === 0) {
+                            block.innerHTML = String("x");
+                        } else {
+                            block.innerHTML = String("0");
+                        }
+                        step += 1;
+                        checkWinner();
+                    } else {
+                        console.log("block filled");
+                    }
+                } else if (String(JSON.stringify(sorting)) === String('["0","4"]')) {
+                    let block = document.getElementById(8);
+                    if (block.innerHTML === "") {
+                        if (step % 2 === 0) {
+                            block.innerHTML = String("x");
+                        } else {
+                            block.innerHTML = String("0");
+                        }
+                        step += 1;
+                        checkWinner();
+                    } else {
+                        console.log("block filled");
+                    }
+                } else if (String(JSON.stringify(sorting)) === String('["4","8"]')) {
+                    let block = document.getElementById(0);
+                    if (block.innerHTML === "") {
+                        if (step % 2 === 0) {
+                            block.innerHTML = String("x");
+                        } else {
+                            block.innerHTML = String("0");
+                        }
+                        step += 1;
+                        checkWinner();
+                    } else {
+                        console.log("block filled");
+                    }
+                } else if (String(JSON.stringify(sorting)) === String('["2","4"]')) {
+                    let block = document.getElementById(6);
+                    if (block.innerHTML === "") {
+                        if (step % 2 === 0) {
+                            block.innerHTML = String("x");
+                        } else {
+                            block.innerHTML = String("0");
+                        }
+                        step += 1;
+                        checkWinner();
+                    } else {
+                        console.log("block filled");
+                    }
+                } else if (String(JSON.stringify(sorting)) === String('["4","8"]')) {
+                    let block = document.getElementById(0);
+                    if (block.innerHTML === "") {
+                        if (step % 2 === 0) {
+                            block.innerHTML = String("x");
+                        } else {
+                            block.innerHTML = String("0");
+                        }
+                        step += 1;
+                        checkWinner();
+                    } else {
+                        console.log("block filled");
+                    }
+                } else if (
+                    String(JSON.stringify(sorting)) === String('["4","6"]')
+                ) {
+                    let block = document.getElementById(2);
+                    if (block.innerHTML === "") {
+                        if (step % 2 === 0) {
+                            block.innerHTML = String("x");
+                        } else {
+                            block.innerHTML = String("0");
+                        }
+                        step += 1;
+                        checkWinner();
+                    } else {
+                        console.log("block filled");
+                    }
+                } else {
+                    if (block.innerHTML === "") {
+                        if (step % 2 === 0) {
+                            block.innerHTML = String("x");
+                        } else {
+                            block.innerHTML = String("0");
+                        }
+                        step += 1;
+                        checkWinner();
+                    } else {
+                        Bot();
+                    }
+                }
+                // console.log("sorting", sorting);
+            }
+        };
+        botStep();
+    }
+    function checkWinner() {
         let allBlock = document.getElementsByClassName("block");
         if (
-            (allBlock[0].innerHTML == "x" &&
-                allBlock[1].innerHTML == "x" &&
-                allBlock[2].innerHTML == "x") ||
-            (allBlock[3].innerHTML == "x" &&
-                allBlock[4].innerHTML == "x" &&
-                allBlock[5].innerHTML == "x") ||
-            (allBlock[6].innerHTML == "x" &&
-                allBlock[7].innerHTML == "x" &&
-                allBlock[8].innerHTML == "x") ||
-            (allBlock[0].innerHTML == "x" &&
-                allBlock[3].innerHTML == "x" &&
-                allBlock[6].innerHTML == "x") ||
-            (allBlock[1].innerHTML == "x" &&
-                allBlock[4].innerHTML == "x" &&
-                allBlock[7].innerHTML == "x") ||
-            (allBlock[2].innerHTML == "x" &&
-                allBlock[5].innerHTML == "x" &&
-                allBlock[8].innerHTML == "x") ||
-            (allBlock[0].innerHTML == "x" &&
-                allBlock[4].innerHTML == "x" &&
-                allBlock[8].innerHTML == "x") ||
-            (allBlock[2].innerHTML == "x" &&
-                allBlock[4].innerHTML == "x" &&
-                allBlock[6].innerHTML == "x")
+            (allBlock[0].innerHTML === "x" &&
+                allBlock[1].innerHTML === "x" &&
+                allBlock[2].innerHTML === "x") ||
+            (allBlock[3].innerHTML === "x" &&
+                allBlock[4].innerHTML === "x" &&
+                allBlock[5].innerHTML === "x") ||
+            (allBlock[6].innerHTML === "x" &&
+                allBlock[7].innerHTML === "x" &&
+                allBlock[8].innerHTML === "x") ||
+            (allBlock[0].innerHTML === "x" &&
+                allBlock[3].innerHTML === "x" &&
+                allBlock[6].innerHTML === "x") ||
+            (allBlock[1].innerHTML === "x" &&
+                allBlock[4].innerHTML === "x" &&
+                allBlock[7].innerHTML === "x") ||
+            (allBlock[2].innerHTML === "x" &&
+                allBlock[5].innerHTML === "x" &&
+                allBlock[8].innerHTML === "x") ||
+            (allBlock[0].innerHTML === "x" &&
+                allBlock[4].innerHTML === "x" &&
+                allBlock[8].innerHTML === "x") ||
+            (allBlock[2].innerHTML === "x" &&
+                allBlock[4].innerHTML === "x" &&
+                allBlock[6].innerHTML === "x")
         ) {
-            alert("Победили крестики");
-            // Reload();
-            window.location.reload();
+            setTimeout(() => {
+                alert("Победили крестики");
+                window.location.reload();
+            }, 500);
         } else if (
-            (allBlock[0].innerHTML == "0" &&
-                allBlock[1].innerHTML == "0" &&
-                allBlock[2].innerHTML == "0") ||
-            (allBlock[3].innerHTML == "0" &&
-                allBlock[4].innerHTML == "0" &&
-                allBlock[5].innerHTML == "0") ||
-            (allBlock[6].innerHTML == "0" &&
-                allBlock[7].innerHTML == "0" &&
-                allBlock[8].innerHTML == "0") ||
-            (allBlock[0].innerHTML == "0" &&
-                allBlock[3].innerHTML == "0" &&
-                allBlock[6].innerHTML == "0") ||
-            (allBlock[1].innerHTML == "0" &&
-                allBlock[4].innerHTML == "0" &&
-                allBlock[7].innerHTML == "0") ||
-            (allBlock[2].innerHTML == "0" &&
-                allBlock[5].innerHTML == "0" &&
-                allBlock[8].innerHTML == "0") ||
-            (allBlock[0].innerHTML == "0" &&
-                allBlock[4].innerHTML == "0" &&
-                allBlock[8].innerHTML == "0") ||
-            (allBlock[2].innerHTML == "0" &&
-                allBlock[4].innerHTML == "0" &&
-                allBlock[6].innerHTML == "0")
+            (allBlock[0].innerHTML === "0" &&
+                allBlock[1].innerHTML === "0" &&
+                allBlock[2].innerHTML === "0") ||
+            (allBlock[3].innerHTML === "0" &&
+                allBlock[4].innerHTML === "0" &&
+                allBlock[5].innerHTML === "0") ||
+            (allBlock[6].innerHTML === "0" &&
+                allBlock[7].innerHTML === "0" &&
+                allBlock[8].innerHTML === "0") ||
+            (allBlock[0].innerHTML === "0" &&
+                allBlock[3].innerHTML === "0" &&
+                allBlock[6].innerHTML === "0") ||
+            (allBlock[1].innerHTML === "0" &&
+                allBlock[4].innerHTML === "0" &&
+                allBlock[7].innerHTML === "0") ||
+            (allBlock[2].innerHTML === "0" &&
+                allBlock[5].innerHTML === "0" &&
+                allBlock[8].innerHTML === "0") ||
+            (allBlock[0].innerHTML === "0" &&
+                allBlock[4].innerHTML === "0" &&
+                allBlock[8].innerHTML === "0") ||
+            (allBlock[2].innerHTML === "0" &&
+                allBlock[4].innerHTML === "0" &&
+                allBlock[6].innerHTML === "0")
         ) {
-            alert("Победили нолики");
-            // Reload();
-            window.location.reload();
+            setTimeout(() => {
+                alert("Победили нолики");
+                window.location.reload();
+            }, 500);
         } else {
             checkStep();
         }
     }
     function checkStep() {
         if (step >= 9) {
-            alert("Ничья");
-            window.location.reload();
+            setTimeout(() => {
+                alert("Ничья");
+                window.location.reload();
+            }, 500);
+        } else {
+            NextStep();
         }
     }
+    function NextStep() {
+        // console.log("step", step);
+        if (botFirst && step % 2 === 0) {
+            // console.log("Bot");
+            Bot();
+        } else {
+            if (!botFirst && step % 2 !== 0) {
+                // console.log("Bot");
+                Bot();
+            }
+            document.getElementById("game").onclick = function (event) {
+                // console.log(event);
+                if (event?.path[0].innerHTML === "") {
+                    if (event.target.className === "block") {
+                        Step(event);
+                    }
+                }
+            };
+        }
+    }
+    NextStep();
 };

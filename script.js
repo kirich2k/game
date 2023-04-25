@@ -340,14 +340,27 @@ window.onload = function () {
     }
     function NextStep() {
         // console.log("step", step);
-        if (botFirst && step % 2 === 0) {
-            // console.log("Bot");
-            Bot();
-        } else {
-            if (!botFirst && step % 2 !== 0) {
+        console.log(isBot);
+        if (isBot) {
+            if (botFirst && step % 2 === 0) {
                 // console.log("Bot");
                 Bot();
+            } else {
+                console.log("тут");
+                if (!botFirst && step % 2 !== 0) {
+                    // console.log("Bot");
+                    Bot();
+                }
+                document.getElementById("game").onclick = function (event) {
+                    // console.log(event);
+                    if (event?.target.innerHTML === "") {
+                        if (event.target.className === "block") {
+                            Step(event);
+                        }
+                    }
+                };
             }
+        } else {
             document.getElementById("game").onclick = function (event) {
                 // console.log(event);
                 if (event?.target.innerHTML === "") {

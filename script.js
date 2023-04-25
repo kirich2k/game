@@ -349,8 +349,8 @@ window.onload = function () {
                 Bot();
             }
             document.getElementById("game").onclick = function (event) {
-                // console.log(event);
-                if (event?.path[0].innerHTML === "") {
+                console.log(event);
+                if (event?.target.innerHTML === "") {
                     if (event.target.className === "block") {
                         Step(event);
                     }
